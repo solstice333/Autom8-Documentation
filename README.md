@@ -26,6 +26,16 @@ continuous integration.
 
 5. Win32::Env : https://code.activestate.com/ppm/Win32-Env/
 
+**Installation**
+
+If on DOMAIN1, the easiest way to install Autom8 is to use 
+\\\\Carson\Engineering\Users\kn\Autom8_Installer\install_Autom8.bat. This will
+install the Autom8 repository with the dependencies in the path of your
+choosing. For just installing dependencies, use install_dep.bat.
+
+**Updates**
+
+If on DOMAIN1, update.bat is used to check for Autom8 updates
 
 ##How To Use##
 
