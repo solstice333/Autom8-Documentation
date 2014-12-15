@@ -306,7 +306,7 @@ Usage: replace the command/value section with the function name, parentheses, an
 
 Existing internal functions are:
 
-- cmd_updt(): updates path for the shell session
+- cmd_updt(): updates environment for the current Autom8 process
 
 - time_init(): initializes timer
   
