@@ -221,7 +221,18 @@ the scheduled job. User must use the -d option to do that.
 Changing the job configuration definition and then running Autom8 will update
 the job.
 
-Jobs will not run if machine is on battery power
+Jobs will not run if machine is on battery power.
+
+To run a task minimized, user must manually modify the task in the Windows
+Task Scheduler/Scheduled Tasks. Right click on the task and then click on 
+properties. On Windows 7, click on the "Actions" tab, highlight the desired
+action and click "Edit...". In the "Program/script" field, prepend the 
+following:
+
+`cmd /c start /min` 
+
+to the task to be ran then click OK. On Windows Server 2003, this does
+not work as expected unfortunately.
 
 
 **Prefixing Rules inside %commands**
