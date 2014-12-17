@@ -223,16 +223,16 @@ the job.
 
 Jobs will not run if machine is on battery power.
 
-To run a task minimized, user must manually modify the task in the Windows
-Task Scheduler/Scheduled Tasks. Right click on the task and then click on 
-properties. On Windows 7, click on the "Actions" tab, highlight the desired
-action and click "Edit...". In the "Program/script" field, prepend the 
-following:
+Jobs will automatically start minimized.
 
-`cmd /c start /min` 
+It probably goes without saying that you shouldn't have the same taskname
+in two different templates that have job configurations.
 
-to the task to be ran then click OK. On Windows Server 2003, this does
-not work as expected unfortunately.
+Do not schedule a task to run at the same time as another task. For
+clarity, if job1 runs every 5 minutes and job2 runs every 1 minute, 
+there will eventually be a conflict. The hack for this kind of stuff 
+(for now) is to have two separate Autom8 repositories since the error
+checking code for this might be a little bit extensive.
 
 
 **Prefixing Rules inside %commands**
