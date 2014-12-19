@@ -226,13 +226,13 @@ Jobs will not run if machine is on battery power.
 Jobs will automatically start minimized.
 
 It probably goes without saying that you shouldn't have the same taskname
-in two different templates that have job configurations.
+in two different templates that have job configurations defined. If a 
+taskname is used twice in two different templates, Autom8 will associate 
+the last template to be used with that taskname.
 
-Do not schedule a task to run at the same time as another task. For
-clarity, if job1 runs every 5 minutes and job2 runs every 1 minute, 
-there will eventually be a conflict. The hack for this kind of stuff 
-(for now) is to have two separate Autom8 repositories since the error
-checking code for this might be a little bit extensive.
+Do NOT put Autom8 in a location where it is shared by different machines.
+In other words do not install Autom8 in cloud storage or on a network mapped 
+drive where Autom8 is being shared by multiple machines such as Dropbox.
 
 
 **Prefixing Rules inside %commands**
