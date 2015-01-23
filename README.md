@@ -126,10 +126,11 @@ $| = 1;
 use strict;
 use Cwd;
 use Tie::IxHash;
+use POSIX qw(strftime);
 
 <global declarations>
 # Example
-our $foo;
+our $logname = "foo_" . strftime(%m%d%y, localtime());
 
 <job configuration>
 # Example
@@ -143,10 +144,10 @@ sub setup {
 }
 
 sub body {
-   <Define the %commands hash table here>
+   <Define the %commands hash table configuration here>
    # Example
    tie(our %commands, 'Tie::IxHash', 
-      '@qcomment@i' => 'echo foo'
+      '!qcomment!i' => 'echo foo'
    );
 }
 
@@ -175,6 +176,12 @@ ignored.
 
 %commands must be defined in body(). Defining %commands elsewhere causes
 undefined behavior.
+
+
+**Special Variables**
+
+$logname : if defined, then |$logname| replaces the default log name which
+is usually `<template name>_yymmdd_HHMMSS.LOG`
 
 
 **Job Configuration**
@@ -239,20 +246,21 @@ drive where Autom8 is being shared by multiple machines such as Dropbox.
 
 Inside [template name].pm in %commands initialization,
 
-- Prefixing a comment with '@o' captures STDOUT asynchronously and tees
-it to the log file and the console as the command is running. This
-is slower than '@q' since the program has to dynamically change file handlers 
+- Prefixing a comment with '!o' captures STDOUT asynchronously and tees
+it to the log file and the console as the command is running. The overall
+process is slower than '!q' since the program has to dynamically change 
+file handlers
 
-- Prefixing a comment with '@q' captures STDOUT and tees
-it to the log file and the console. With '@q' however, user must wait 
+- Prefixing a comment with '!q' captures STDOUT and tees
+it to the log file and the console. With '!q' however, user must wait 
 till the command is finished before it is displayed in console or 
 recorded in the log file such that data is captured one block at a time
-which makes the overall runtime faster than using '@o'.
+which makes the overall runtime faster than using '!o'.
 
 - No prefixing defaults to running the command using system() which 
 doesn't capture anything. This is definitely the fastest option.
 
-- Prefixing with '@?' enables conditional branching such that the last
+- Prefixing with '!?' enables conditional branching such that the last
 command's exit status is checked. The usage is such that 
 
    `'<Comment>' => '<LEFT_LABEL> : <RIGHT_LABEL>'`
@@ -261,7 +269,7 @@ If the exit status is 0 (success), the script branches to the `<LEFT_LABEL>`.
 Otherwise, the `<RIGHT_LABEL>` is branched to. For example,
 
    ```
-   '@?Foo' => 'LEFT : RIGHT',        # the prior command returns 0
+   '!?Foo' => 'LEFT : RIGHT',        # the prior command returns 0
    <more commands here>
    'LEFT' => 'echo branched here'
    ```
@@ -270,7 +278,7 @@ Branching can be done upwards or downwards. The label specified within the
 hash key, must have no whitespace i.e. the following is wrong,
 
    ```
-   '@?Foo' => 'LEFT : RIGHT',        # the prior command returns 0
+   '!?Foo' => 'LEFT : RIGHT',        # the prior command returns 0
    'LEFT ' => 'echo branched here'   # error, whitespace after LEFT
    ```
 
@@ -283,18 +291,18 @@ continue, use the '-i' flag.
 
 Inside [template name].pm in %commands initialization,
 
-- Suffixing a comment with '@i' causes that command's exit status prompt to be
+- Suffixing a comment with '!i' causes that command's exit status prompt to be
 ignored if exit status is nonzero. In other words, 'yes' to continue is 
 automatically chosen and the prompt doesn't block. The scope of this only
-applies to the command suffixed with '@i'.
+applies to the command suffixed with '!i'.
 
 For example,
 
-'nonzero exit@i' => 'fc'  # windows' version of linux' diff command  
+'nonzero exit!i' => 'fc'  # windows' version of linux' diff command  
 
 will normally prompt the user if he/she wants to continue with the script due
 to the nonzero exit status which by convention is a bad exit status. With the
-'@i' suffix, the script will automatically continue, and thus carrying the 
+'!i' suffix, the script will automatically continue, and thus carrying the 
 exit status forward to a possible conditional statement.
 
 
